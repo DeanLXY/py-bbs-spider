@@ -44,7 +44,7 @@ PROXIES = [
 	{'ip_port': '122.96.59.104:80', 'user_pass': ''},
 	{'ip_port': '122.224.249.122:8088', 'user_pass': ''},
 ]
-
+DUPEFILTER_CLASS = 'scrapy.dupefilter.BaseDupeFilter'
 COOKIES_ENABLED=False
 DOWNLOAD_DELAY=3
 
