@@ -22,20 +22,22 @@ class HeimaSpider(CrawlSpider):
     start_urls = [
         # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=627',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=411&filter=typeid&typeid=686',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632'
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
     ]
+
+    def start_requests(self):
+        for start_url in self.start_urls:
+            yield Request(start_url,meta={'url':start_url}, callback=self.parse)
 
     def parse(self, response):
         self.domain_index = self.parse_domain_index(response.meta)
-        print '----------------------->>>>>'+ str(self.domain_index)
-        if self.domain_index:
+        if not self.domain_index:
             self.domain_index = 0
         # 查询共有几页数据
         total_page = response.xpath("//label/span/text()").extract_first()
         current_page = response.xpath("//input[@name='custompage']/@value").extract_first()
-        print u"开始请求列表数据----------------------"+str(current_page)
         pages_full_url = self.start_urls[self.domain_index]
         if current_page:
             pages_full_url = pages_full_url+"&page="+current_page
