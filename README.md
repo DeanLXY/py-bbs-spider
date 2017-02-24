@@ -10,6 +10,11 @@
 ```shell
     scrapy crawl heima
 ```
+
+### Windows start
+```shell
+    dist/setup/setup.exe 双击打卡即可
+```
 ## To Do List
 - [x] 模块查询
 - [x] 分页查询
@@ -19,7 +24,7 @@
 - [x] 自动查询查看量与回复量
 - [x] 自动存储数据
 - [ ] 自动去重 
-- [ ] 图形化界面
+- [x] 图形化界面
 
 ## Discussing
 
