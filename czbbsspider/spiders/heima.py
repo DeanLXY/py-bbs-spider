@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from czbbsspider.items import HeimaKbdlItem, HeimaKbdlDetailItem, HeimaKbdlDetailPassenerItem
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 from scrapy.http import Request
 import re
 
@@ -126,3 +126,12 @@ class HeimaSpider(CrawlSpider):
         item = HeimaKbdlDetailItem(
             bankuai_name=bankuai_level, title=title, copy_url=copy_url, topsticks=passeners)
         yield item
+
+
+
+
+
+import os
+if __name__ == "__main__":
+    spider = HeimaSpider()
+    spider.start_requests()

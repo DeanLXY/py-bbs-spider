@@ -26,7 +26,7 @@ class FilterWordsPipeline(object):
     def __init__(self):
         # self.file = open("data.json", "wb")
         self.file = codecs.open(
-            "scraped_data_utf8.json", "awb", encoding="utf-8")
+            "scraped_data_utf8.json", "wb", encoding="utf-8")
 
     def process_item(self, item, spider):
         if item:
@@ -92,3 +92,6 @@ class WriteCleanDataExcelPipeline(object):
             self.ws.append(line)  # 将数据以行的形式添加到xlsx中
             self.wb.save('bbsheima.xlsx')  # 保存xlsx文件
         return item
+
+    def spider_closed(self,spider):
+        raw_input()
