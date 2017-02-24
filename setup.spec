@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['setup.py'],
-             pathex=['P:\\Desktop\\scrapy\\bbsmj\\czbbsspider'],
+             pathex=['L:\\Desktop\\scrapy\\bbsmj\\czbbsspider'],
              binaries=[],
              datas=[],
              hiddenimports=[],

@@ -1,4 +1,4 @@
-('P:\\Desktop\\scrapy\\bbsmj\\czbbsspider\\build\\setup\\out00-PYZ.pyz',
+('L:\\Desktop\\scrapy\\bbsmj\\czbbsspider\\build\\setup\\out00-PYZ.pyz',
  [('encodings.aliases',
    'C:\\Develop\\sofeware\\Python2.7\\lib\\encodings\\aliases.py',
    'PYMODULE'),

@@ -4,3 +4,4 @@ if __name__ == "__main__":
     # spider = HeimaSpider()
     # spider.start_requests()
     os.system('scrapy crawl heima')
+    raw_input()

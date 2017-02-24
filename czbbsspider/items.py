@@ -16,6 +16,7 @@ class CzbbsspiderItem(scrapy.Item):
 
 # 开班典礼
 class HeimaKbdlItem(scrapy.Item):
+    name = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
     updateTime = scrapy.Field()

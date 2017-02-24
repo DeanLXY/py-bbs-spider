@@ -41,7 +41,7 @@ class HeimaSpider(CrawlSpider):
         pages_full_url = self.start_urls[self.domain_index]
         if current_page:
             pages_full_url = pages_full_url+"&page="+current_page
-        yield Request(pages_full_url,meta={'current_page':current_page} ,callback=self.parse_pages)
+        yield Request(pages_full_url,meta={'current_page':current_page,"name":self.domain_names[self.domain_index]} ,callback=self.parse_pages)
 
         pages = []
         page_total = 1
@@ -71,6 +71,7 @@ class HeimaSpider(CrawlSpider):
     def parse_pages(self,response):
         table = response.xpath("//table")
         current_page = response.meta['current_page']
+        name = response.meta['name']
         print u"当前 %s 页面中共有 %s 条数据" % (current_page,len(table.xpath("tbody")))
         for tbody in table.xpath("tbody"):
             # print tbody.extract()
@@ -86,7 +87,7 @@ class HeimaSpider(CrawlSpider):
             lastReplyTime = tbody.xpath("tr/td[@class='by']/em/a/text()").extract_first()
             if not lastReplyTime:
                 lastReplyTime = tbody.xpath("tr/td[@class='by']/em/a/span/text()").extract_first()
-            item = HeimaKbdlItem(title=title, author=author, updateTime=updateTime, sawNum=sawNum,
+            item = HeimaKbdlItem(name=name,title=title, author=author, updateTime=updateTime, sawNum=sawNum,
                                  replyNum=replyNum, lastReplyAuthor=lastReplyAuthor, lastReplyTime=lastReplyTime, href=href)
             # yield item
             if href:
@@ -99,17 +100,16 @@ class HeimaSpider(CrawlSpider):
 
     def parse_detail(self, response):
         item = response.meta['item']
-        bankuai_levels = response.xpath(
-            "//div[@class='bm cl']/div[@class='z']")
-        bankuai_level = ''
-        for level in bankuai_levels.xpath('a'):
-            bankuai_level = bankuai_level + "<<" + level.xpath('text()').extract_first()
+        bankuai_levels = response.xpath("//div[@class='bm cl']/div[@class='z']")
+        bankuai_level = item['name']
+        if not bankuai_level:
+            for level in bankuai_levels.xpath('a'):
+                bankuai_level = bankuai_level + "<<" + level.xpath('text()').extract_first()
         table = response.xpath("//table[@class='comiis_viewtop']")
         title = table.xpath("tr/td/h1/span/text()").extract_first()
         copy_url = self.base_url + '/' + table.xpath("tr/td/span/a/@href").extract_first()
         passeners = []
-        print '\n\n'
-        print "<<" + bankuai_level + u"中有" + item['replyNum'] + u"人回复"
+        print '>>>>>>>>>>>'+bankuai_level+"<<" + item['title'] + u"中有" + item['replyNum'] + u"人回复"
         for table_plhin in response.xpath("//table[@class='plhin']"):
             # print '--------------'
             reply_author = table_plhin.xpath("tr/td/div/div/div/a/text()").extract_first()
