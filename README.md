@@ -1,9 +1,9 @@
 ##Requirements
 
-Bash(git、ssh)
-Python 2.7
-Scrapy
-openpyxl
+* Bash(git、ssh)
+* Python 2.7
+* Scrapy
+* openpyxl
 ##Quick Start
 
 ```shell
@@ -22,7 +22,7 @@ openpyxl
 
 ## Discussing
 
-submit issue
-email: wangxj0714@163.com
+* submit issue
+* email: wangxj0714@163.com
 
 
