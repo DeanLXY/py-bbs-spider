@@ -10,7 +10,7 @@
     scrapy crawl heima
 ```
 ## To Do List
-- [x]模块查询
+- [x] 模块查询
 - [x] 分页查询
 - [x] 页码自动识别
 - [x] 文章列表自动抓取
