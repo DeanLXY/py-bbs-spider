@@ -33,7 +33,7 @@ class HeimaSpider(CrawlSpider):
     start_urls = [
         # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=627',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=411&filter=typeid&typeid=686',
-        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=705',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
     ]
