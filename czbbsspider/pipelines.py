@@ -13,6 +13,8 @@ import os
 from czbbsspider.items import HeimaKbdlItem, HeimaKbdlDetailItem
 from openpyxl import Workbook, load_workbook
 
+import datetime
+
 
 
 class CzbbsspiderPipeline(object):
@@ -38,6 +40,7 @@ class FilterWordsPipeline(object):
         self.file.close()
 
 
+# 过滤正文信息
 class FilterTitlePipeLine(object):
 
     def process_item(self, item, spider):
@@ -45,8 +48,10 @@ class FilterTitlePipeLine(object):
             if item['title']:
                 return item
             else:
+                # raise Exception(u'不是正文信息，自动忽略')
                 pass
-        return item
+        else:
+            return item
 
 
 
@@ -68,30 +73,39 @@ class ReadAccountPipeline(object):
             w4 = self.ws.cell(row=rx, column=4).value
             data_dic[w4] = w2
 
+
+# 过滤当月时间
+class FilterDataExcelPipeLine(object):
+
+    def __init__(self):
+        pass
+
 # 将干净的数据写到xlsx中
 class WriteCleanDataExcelPipeline(object):
 
     def __init__(self):
         self.wb = Workbook()
         self.ws = self.wb.active
-        th_line = ['板块', '姓名','论坛账号', '发布时间', '序号', '文章名称', '链接']
+        th_line = ['板块', '姓名','论坛账号', '发布时间', '序号', '文章名称', '链接','回复/查看']
         self.ws.append(th_line)
 
     def process_item(self, item, spider):
-        if isinstance(item, HeimaKbdlDetailItem):
-            print item['topsticks'][0].get('username')
-            bankuai_name = item['bankuai_name']
-            username_bbs = item['topsticks'][0].get('username')
-            username = u'未匹配到合适的用户名'
+        if isinstance(item, HeimaKbdlItem):
+            bankuai_name = item['name']
+            username_bbs = item['author']
+            username = u''
             if data_dic.has_key(username_bbs):
             	username = data_dic[username_bbs]
-            update_time = item['topsticks'][0].get('replyTime')
+            # update_time = item['topsticks'][0].get('replyTime')
+            update_time = item['updateTime']
             title = item['title']
-            copy_url = item['copy_url']
-            line = [bankuai_name, username,username_bbs, update_time, '', title, copy_url]  # 把数据中每一项整理出来
+            copy_url = item['href']
+            reply_info = item['replyNum']+"/"+item['sawNum']
+            line = [bankuai_name, username,username_bbs, update_time, '', title, copy_url,reply_info]  # 把数据中每一项整理出来
             self.ws.append(line)  # 将数据以行的形式添加到xlsx中
-            self.wb.save('bbsheima.xlsx')  # 保存xlsx文件
+            today = datetime.date.today()
+            self.wb.save('heima-bankuai-list-'+str(today)+'.xlsx')  # 保存xlsx文件
         return item
 
     def spider_closed(self,spider):
-        raw_input()
+        pass

@@ -16,6 +16,7 @@ class CzbbsspiderItem(scrapy.Item):
 
 # 开班典礼
 class HeimaKbdlItem(scrapy.Item):
+    bankuai_name = scrapy.Field()
     name = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
@@ -28,11 +29,14 @@ class HeimaKbdlItem(scrapy.Item):
 
 
 class HeimaKbdlDetailItem(scrapy.Item):
-	bankuai_name = scrapy.Field()
-	copy_url = scrapy.Field()
-	topsticks = scrapy.Field(serializer=str)
-	floor_level = scrapy.Field()
-	title = scrapy.Field()
+    bankuai_name = scrapy.Field()
+    copy_url = scrapy.Field()
+    topsticks = scrapy.Field(serializer=str)
+    floor_level = scrapy.Field()
+    title = scrapy.Field()
+    replyNum = scrapy.Field()
+    sawNum = scrapy.Field()
+    updateTime = scrapy.Field()
 
 
 class HeimaKbdlDetailPassenerItem(scrapy.Item):
