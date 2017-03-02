@@ -82,7 +82,7 @@ class HeimaSpider(CrawlSpider):
             url = meta['url']
             if '686' in url:
                 return 0
-            elif '705' in url:
+            elif '605' in url:
                 return 1
             elif '647' in url:
                 return 2
