@@ -14,6 +14,7 @@ from czbbsspider.items import HeimaKbdlItem, HeimaKbdlDetailItem
 from openpyxl import Workbook, load_workbook
 
 import datetime
+import re
 
 
 
