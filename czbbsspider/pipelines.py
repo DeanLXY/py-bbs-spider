@@ -78,12 +78,21 @@ class FilterDataExcelPipeLine(object):
 
 # 統計一篇文章記錄用戶的統計次數
 article_count_times = {}
+count_times_excel_d = {}  # 名：行
 
 
 class WriteCleanDataAndCountTimes(object):
 
     def __init__(self):
-       for k, v in data_dic.items():
+        self.workbook_ = load_workbook(filename='2017.xlsx')
+        sheetnames = self.workbook_.get_sheet_names()  # 获得表单名字
+        self.ws = self.workbook_.get_sheet_by_name(sheetnames[1])  # 从工作表中提取某一表单
+        for rx in range(5, self.ws.max_row + 1):
+            w5 = self.ws.cell(row=rx, column=5).value
+            count_times_excel_d[w5] = rx
+        print '\n\n>>>>>>>>>>>>>'+str(count_times_excel_d)
+
+        for k, v in data_dic.items():
             article_count_times[v] = 0
 
 # 記錄規則，一篇文章一人多次回復視為一次
@@ -109,7 +118,13 @@ class WriteCleanDataAndCountTimes(object):
         return item
 
     def close_spider(self,spider):
-        print u'\n\n统计数据 '+str(article_count_times)
+        print u'\n\n统计数据如下 :'
+        for k,v in article_count_times.items():
+            if count_times_excel_d.has_key(k):
+                print k,v
+                self.ws.cell(row = count_times_excel_d[k], column = 8).value = v
+                self.workbook_.save(filename='2017.xlsx')
+        # self.ws.close()
 # 将干净的数据写到xlsx中
 
 
