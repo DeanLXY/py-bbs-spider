@@ -95,10 +95,12 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'czbbsspider.pipelines.ReadAccountPipeline': 200,
+   'czbbsspider.pipelines.ReadAccountPipeline': 1,
    'czbbsspider.pipelines.FilterWordsPipeline': 300,
    'czbbsspider.pipelines.FilterTitlePipeLine': 300,
-   'czbbsspider.pipelines.WriteCleanDataExcelPipeline': 900,   
+   'czbbsspider.pipelines.WriteCleanDataExcelPipeline': 800,   
+   'czbbsspider.pipelines.WriteCleanDataAndCountTimes': 900,   
+
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

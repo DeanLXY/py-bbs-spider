@@ -6,8 +6,13 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.http import Request
 import re
 import czbbsspider.utils as utils
-
 import os
+
+import sys
+print sys.getdefaultencoding()  
+reload(sys)
+sys.setdefaultencoding('UTF-8')
+
 if __name__ == "__main__":
     print 'starting--------------------------------'
     # spider = HeimaSpider()
@@ -33,9 +38,9 @@ class HeimaSpider(CrawlSpider):
     start_urls = [
         # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=627',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=411&filter=typeid&typeid=686',
-        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
-        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
-        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
+        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
+        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
+        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
     ]
     
     def start(self):
@@ -141,12 +146,7 @@ class HeimaSpider(CrawlSpider):
                 yield item
             if self._input is '2' or self._input is '3':
                 if href:
-                    full_url = ''
-                    if len(href) == 1:
-                        full_url = self.base_url + "/" + href[0]
-                    else:
-                        full_url = self.base_url + "/" + href[1]
-                    yield Request(full_url, meta={'item': item}, callback=self.parse_detail)
+                    yield Request(href, meta={'item': item}, callback=self.parse_detail)
 
     def parse_detail(self, response):
         item = response.meta['item']

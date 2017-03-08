@@ -15,6 +15,14 @@
 ```shell
     dist/setup/setup.exe 双击打卡即可
 ```
+
+> ~~删除了windows执行方式~~
+> ~~删除了windows执行方式~~
+> ~~删除了windows执行方式~~
+> ~~删除了windows执行方式~~
+> ~~删除了windows执行方式~~
+
+
 ## To Do List
 - [x] 模块查询
 - [x] 分页查询
@@ -25,6 +33,11 @@
 - [x] 自动存储数据
 - [ ] 自动去重 
 - [x] 图形化界面
+
+## New To Do List
+- [x] 统计回复数量
+- [x] 自动去除重复数量 
+- [x] 统计回复人，自动忽略楼主
 
 ## Discussing
 
