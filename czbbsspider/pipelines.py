@@ -17,17 +17,10 @@ import datetime
 import re
 
 
-class CzbbsspiderPipeline(object):
-
-    def process_item(self, item, spider):
-        return item
-
-
 class FilterWordsPipeline(object):
 
     def __init__(self):
         # self.file = open("data.json", "wb")
-        print '\n'+'FilterWordsPipeline 正在初始化'
         self.file = codecs.open(
             "scraped_data_utf8.json", "wb", encoding="utf-8")
 
@@ -37,7 +30,7 @@ class FilterWordsPipeline(object):
             self.file.write(line)
             return item
 
-    def spider_closed(self, spider):
+    def close_spider(self, spider):
         self.file.close()
 
 
@@ -90,8 +83,7 @@ article_count_times = {}
 class WriteCleanDataAndCountTimes(object):
 
     def __init__(self):
-        print '\n'+'WriteCleanDataAndCountTimes 正在初始化...'
-        for k, v in data_dic.items():
+       for k, v in data_dic.items():
             article_count_times[v] = 0
 
 # 記錄規則，一篇文章一人多次回復視為一次
@@ -116,11 +108,8 @@ class WriteCleanDataAndCountTimes(object):
             print '*' * 50
         return item
 
-    def spider_closed(self, spider):
-        print '\n\n'
-        print u'统计信息'+ str(article_count_times)
-        print '\n\n'
-
+    def close_spider(self,spider):
+        print u'\n\n统计数据 '+str(article_count_times)
 # 将干净的数据写到xlsx中
 
 
