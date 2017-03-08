@@ -9,7 +9,7 @@ import czbbsspider.utils as utils
 import os
 
 import sys
-print sys.getdefaultencoding()  
+print sys.getdefaultencoding()
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
@@ -19,7 +19,6 @@ if __name__ == "__main__":
     # spider.start_requests()
     os.system('scrapy crawl heima')
     raw_input()
-
 
 
 class HeimaSpider(CrawlSpider):
@@ -38,11 +37,11 @@ class HeimaSpider(CrawlSpider):
     start_urls = [
         # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=627',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=411&filter=typeid&typeid=686',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
-        # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
     ]
-    
+
     def start(self):
         utils.print_tips_info()
         inp = raw_input('please input your choice:')
@@ -112,7 +111,7 @@ class HeimaSpider(CrawlSpider):
             title = tbody.xpath("tr/th/a/text()").extract_first()
             href = tbody.xpath("tr/th/a[@class='s xst']/@href").extract_first()
             if href:
-                href = self.base_url +"/"+ href
+                href = self.base_url + "/" + href
             author = tbody.xpath(
                 "tr/td[@class='by']/cite/a/text()").extract_first()
             updateTime = tbody.xpath(
@@ -132,16 +131,16 @@ class HeimaSpider(CrawlSpider):
                 lastReplyTime = tbody.xpath(
                     "tr/td[@class='by']/em/a/span/text()").extract_first()
             item = HeimaKbdlItem(
-                bankuai_name    = bankuai_level,
-                name            = name,
-                title           = title,
-                author          = author,
-                updateTime      = updateTime,
-                sawNum          = sawNum,
-                replyNum        = replyNum,
-                lastReplyAuthor = lastReplyAuthor,
-                lastReplyTime   = lastReplyTime,
-                href            = href)
+                bankuai_name=bankuai_level,
+                name=name,
+                title=title,
+                author=author,
+                updateTime=updateTime,
+                sawNum=sawNum,
+                replyNum=replyNum,
+                lastReplyAuthor=lastReplyAuthor,
+                lastReplyTime=lastReplyTime,
+                href=href)
             if self._input is '1' or self._input is '3':
                 yield item
             if self._input is '2' or self._input is '3':
@@ -162,7 +161,7 @@ class HeimaSpider(CrawlSpider):
         copy_url = self.base_url + '/' + \
             table.xpath("tr/td/span/a/@href").extract_first()
         passeners = []
-        print '>>>>>>>>>>>' + bankuai_level + "<<" + item['title'] + u"中有" + item['replyNum'] + u"人回复"
+        print '\n\n当前位置>>>>>>>>>>>' + bankuai_level + "<<" + item['title'] + u"中有" + item['replyNum'] + u"人回复"
         for table_plhin in response.xpath("//table[@class='plhin']"):
             # print '--------------'
             reply_author = table_plhin.xpath(
@@ -183,5 +182,5 @@ class HeimaSpider(CrawlSpider):
             replyNum=item['replyNum'],
             sawNum=item['sawNum'],
             updateTime=item['updateTime']
-            )
+        )
         yield item

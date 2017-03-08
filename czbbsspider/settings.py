@@ -96,8 +96,9 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'czbbsspider.pipelines.ReadAccountPipeline': 1,
-   'czbbsspider.pipelines.FilterWordsPipeline': 300,
-   'czbbsspider.pipelines.FilterTitlePipeLine': 300,
+   'czbbsspider.pipelines.FilterTitlePipeLine': 100,
+   'czbbsspider.pipelines.FilterWordsPipeline': 200,
+   'czbbsspider.pipelines.FilterDataExcelPipeLine': 799,
    'czbbsspider.pipelines.WriteCleanDataExcelPipeline': 800,   
    'czbbsspider.pipelines.WriteCleanDataAndCountTimes': 900,   
 

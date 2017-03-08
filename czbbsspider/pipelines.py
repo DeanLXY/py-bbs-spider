@@ -11,6 +11,7 @@ from czbbsspider import settings
 import os
 
 from czbbsspider.items import HeimaKbdlItem, HeimaKbdlDetailItem
+import czbbsspider.utils as util_re
 from openpyxl import Workbook, load_workbook
 
 import datetime
@@ -69,10 +70,41 @@ class ReadAccountPipeline(object):
 
 
 # 过滤当月时间
+# 1.过滤列表 正常格式 2017-3-1
+# 2.过滤回复
 class FilterDataExcelPipeLine(object):
 
     def __init__(self):
-        pass
+        self._year = str(datetime.datetime.now().year)
+        self._month = str(datetime.datetime.now().month)
+        print u'\n\n初始化当前时间'+str(self._year)+'-'+str(self._month)+'\n\n'
+
+    def process_item(self, item, spider):
+        if isinstance(item, HeimaKbdlItem):
+            updateTime = item['updateTime']
+            result = re.findall(util_re.time_re, updateTime)
+            if result and len(result) > 0:
+                if self._year in result[0] and self._month in result[0]:
+                    return item
+                else:
+                    pass
+            else:
+                return item
+        elif isinstance(item, HeimaKbdlDetailItem):
+            topstick = item['topsticks'][0]
+            replyTime = topstick['replyTime'] 
+            if replyTime and ' ' in replyTime:
+                rs = replyTime.split(' ')
+                if rs and len(rs) > 2:
+                    replyTime = rs[1]
+                    result = re.findall(util_re.time_re, replyTime)
+                    if result and len(result) > 0:
+                        if self._year in result[0] and self._month in result[0]:
+                           return item 
+                        else:
+                            pass
+                    else:
+                        return item
 
 # 讲数据统计到文档中
 
@@ -86,12 +118,11 @@ class WriteCleanDataAndCountTimes(object):
     def __init__(self):
         self.workbook_ = load_workbook(filename='2017.xlsx')
         sheetnames = self.workbook_.get_sheet_names()  # 获得表单名字
-        self.ws = self.workbook_.get_sheet_by_name(sheetnames[1])  # 从工作表中提取某一表单
+        self.ws = self.workbook_.get_sheet_by_name(
+            sheetnames[1])  # 从工作表中提取某一表单
         for rx in range(5, self.ws.max_row + 1):
             w5 = self.ws.cell(row=rx, column=5).value
             count_times_excel_d[w5] = rx
-        print '\n\n>>>>>>>>>>>>>'+str(count_times_excel_d)
-
         for k, v in data_dic.items():
             article_count_times[v] = 0
 
@@ -110,19 +141,19 @@ class WriteCleanDataAndCountTimes(object):
                     if username in u_list:
                         continue
                     u_list.append(username)
-                    print u'检查到有  '+username +u' 回复了当前文章'
+                    print u'检查到有  ' + username + u' 回复了当前文章'
                     # 只要發現這篇文章中有記錄用戶評論，那麼久終止 並且自動+ 1
                     article_count_times[
                         username] = article_count_times[username] + 1
             print '*' * 50
         return item
 
-    def close_spider(self,spider):
+    def close_spider(self, spider):
         print u'\n\n统计数据如下 :'
-        for k,v in article_count_times.items():
+        for k, v in article_count_times.items():
             if count_times_excel_d.has_key(k):
-                print k,v
-                self.ws.cell(row = count_times_excel_d[k], column = 8).value = v
+                print k, v
+                self.ws.cell(row=count_times_excel_d[k], column=22).value = v
                 self.workbook_.save(filename='2017.xlsx')
         # self.ws.close()
 # 将干净的数据写到xlsx中
