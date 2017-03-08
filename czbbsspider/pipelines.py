@@ -92,7 +92,10 @@ class FilterDataExcelPipeLine(object):
                 return item
         elif isinstance(item, HeimaKbdlDetailItem):
             topstick = item['topsticks'][0]
-            replyTime = topstick['replyTime'] 
+            replyTime = topstick['replyTime'] #发表于 7 天前
+            print '\n\n'+replyTime+'\n\n'
+            if u'天前' in replyTime:
+                return item
             if replyTime and ' ' in replyTime:
                 rs = replyTime.split(' ')
                 if rs and len(rs) > 2:
@@ -105,6 +108,8 @@ class FilterDataExcelPipeLine(object):
                             pass
                     else:
                         return item
+                else:
+                    return item
 
 # 讲数据统计到文档中
 
