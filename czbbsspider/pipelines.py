@@ -93,7 +93,7 @@ class FilterDataExcelPipeLine(object):
         elif isinstance(item, HeimaKbdlDetailItem):
             topstick = item['topsticks'][0]
             replyTime = topstick['replyTime'] #发表于 7 天前
-            print '\n\n'+replyTime+'\n\n'
+            print '\n\n'+replyTime
             if u'天前' in replyTime:
                 return item
             if replyTime and ' ' in replyTime:
@@ -141,6 +141,8 @@ class WriteCleanDataAndCountTimes(object):
             for topstick in topsticks[1:]:
                 # 获取论坛名字
                 username_bbs = topstick['username']
+                if not username_bbs:
+                    continue
                 if data_dic.has_key(username_bbs):
                     username = data_dic[username_bbs]
                     if username in u_list:
