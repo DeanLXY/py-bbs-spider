@@ -13,14 +13,8 @@
 
 ### Windows start
 ```shell
-    dist/setup/setup.exe 双击打卡即可
+    start_up.bat 双击打卡即可
 ```
-
-> ~~删除了windows执行方式~~
-> ~~删除了windows执行方式~~
-> ~~删除了windows执行方式~~
-> ~~删除了windows执行方式~~
-> ~~删除了windows执行方式~~
 
 
 ## To Do List
@@ -39,7 +33,7 @@
 - [x] 自动去除重复数量 
 - [x] 统计回复人，自动忽略楼主
 - [x] 添加当月过滤（列表&回复）
-
+- [x] 添加匿名用户过滤
 ## Discussing
 
 * submit issue
