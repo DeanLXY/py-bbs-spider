@@ -58,7 +58,7 @@ class ReadAccountPipeline(object):
 
     def __init__(self):
         data_dic.clear()
-        workbook_ = load_workbook(filename='bbsaccount.xlsx')
+        workbook_ = load_workbook(filename='./czbbsspider/assets/bbsaccount.xlsx')
         sheetnames = workbook_.get_sheet_names()  # 获得表单名字
         self.ws = workbook_.get_sheet_by_name(sheetnames[0])  # 从工作表中提取某一表单
 
@@ -121,7 +121,7 @@ count_times_excel_d = {}  # 名：行
 class WriteCleanDataAndCountTimes(object):
 
     def __init__(self):
-        self.workbook_ = load_workbook(filename='2017.xlsx')
+        self.workbook_ = load_workbook(filename='./czbbsspider/assets/2017.xlsx')
         sheetnames = self.workbook_.get_sheet_names()  # 获得表单名字
         self.ws = self.workbook_.get_sheet_by_name(
             sheetnames[1])  # 从工作表中提取某一表单
@@ -161,7 +161,7 @@ class WriteCleanDataAndCountTimes(object):
             if count_times_excel_d.has_key(k):
                 print k, v
                 self.ws.cell(row=count_times_excel_d[k], column=22).value = v
-                self.workbook_.save(filename='2017.xlsx')
+                self.workbook_.save(filename='./czbbsspider/assets/2017.xlsx')
         # self.ws.close()
 # 将干净的数据写到xlsx中
 
@@ -190,6 +190,6 @@ class WriteCleanDataExcelPipeline(object):
                     '', title, copy_url, reply_info]  # 把数据中每一项整理出来
             self.ws.append(line)  # 将数据以行的形式添加到xlsx中
             today = datetime.date.today()
-            self.wb.save('heima-bankuai-list-' +
+            self.wb.save('./czbbsspider/assets/heima-bankuai-list-' +
                          str(today) + '.xlsx')  # 保存xlsx文件
         return item
