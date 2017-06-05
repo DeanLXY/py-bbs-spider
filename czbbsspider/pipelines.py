@@ -76,15 +76,22 @@ class FilterDataExcelPipeLine(object):
 
     def __init__(self):
         self._year = str(datetime.datetime.now().year)
-        self._month = str(datetime.datetime.now().month)
+        self._month = "5"#str(datetime.datetime.now().month)
         print u'\n\n初始化当前时间'+str(self._year)+'-'+str(self._month)+'\n\n'
 
     def process_item(self, item, spider):
         if isinstance(item, HeimaKbdlItem):
             updateTime = item['updateTime']
-            result = re.findall(util_re.time_re, updateTime)
-            if result and len(result) > 0:
-                if self._year in result[0] and self._month in result[0]:
+            if " " in updateTime: 
+                pass
+            updateTime = updateTime[1:]
+            ups = updateTime.split('-')
+            #print ">>>>>>"+str(ups)
+            # result = re.findall(util_re.time_re, updateTime)
+            # print "????????"+str(result)
+            # print ">>>>>>>>>>>>>FilterDataExcelPipeLine<<<<<"+str(updateTime)
+            if ups:
+                if self._year == ups[0] and self._month == ups[1]:
                     return item
                 else:
                     pass
