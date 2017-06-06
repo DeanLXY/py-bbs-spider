@@ -37,9 +37,9 @@ class HeimaSpider(CrawlSpider):
     start_urls = [
         # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=627',
         'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=411&filter=typeid&typeid=686',
-       # 'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
-        #'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
-        #'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=235&filter=typeid&typeid=605',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=236&filter=typeid&typeid=647',
+        'http://bbs.itheima.com/forum.php?mod=forumdisplay&fid=237&filter=typeid&typeid=632',
     ]
 
     def start(self):
@@ -165,6 +165,10 @@ class HeimaSpider(CrawlSpider):
             table.xpath("//span[@class='xg1']/a/@href").extract_first()
         passeners = []
         print '\n\n当前位置>>>>>>>>>>>' + bankuai_level + "<<" + title + u"中有" + item['replyNum'] + u"人回复"
+        topstick_time = response.xpath("//div[@class='biaoqib_authi']/span/span/@title").extract_first()
+        if not topstick_time:
+            topstick_time = response.xpath("//div[@class='biaoqib_authi']/span/text()").extract_first()
+        # print "发布时间>>>>>"+topstick_time
         for table_plhin in response.xpath("//div[@class='biaoqib_replythread']"):
             # print '--------------'
             reply_author = table_plhin.xpath(
@@ -180,7 +184,9 @@ class HeimaSpider(CrawlSpider):
             # print passenerItem
             passeners.append(dict(passenerItem))
         item = HeimaKbdlDetailItem(
-            bankuai_name=bankuai_level, title=title, copy_url=copy_url, topsticks=passeners,
+            bankuai_name=bankuai_level, title=title, copy_url=copy_url,
+            topstick = topstick_time,
+            topsticks=passeners,
             replyNum=item['replyNum'],
             sawNum=item['sawNum'],
             updateTime=item['updateTime']

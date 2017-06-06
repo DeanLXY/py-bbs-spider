@@ -37,6 +37,7 @@ class HeimaKbdlDetailItem(scrapy.Item):
     replyNum = scrapy.Field()
     sawNum = scrapy.Field()
     updateTime = scrapy.Field()
+    topstick = scrapy.Field()
 
 
 class HeimaKbdlDetailPassenerItem(scrapy.Item):

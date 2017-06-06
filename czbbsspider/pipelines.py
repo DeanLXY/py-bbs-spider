@@ -58,16 +58,16 @@ class ReadAccountPipeline(object):
 
     def __init__(self):
         data_dic.clear()
-        workbook_ = load_workbook(filename='./czbbsspider/assets/bbsaccount.xlsx')
+        workbook_ = load_workbook(filename=u'./czbbsspider/assets/2017.xlsx')
         sheetnames = workbook_.get_sheet_names()  # 获得表单名字
         self.ws = workbook_.get_sheet_by_name(sheetnames[0])  # 从工作表中提取某一表单
 
         # 把数据存到字典中 d = {“论坛名字”:"真实名字"}
-        for rx in range(2, self.ws.max_row + 1):
-            w2 = self.ws.cell(row=rx, column=2).value
-            w4 = self.ws.cell(row=rx, column=4).value
+        for rx in range(5, self.ws.max_row + 1):
+            w2 = self.ws.cell(row=rx, column=4).value
+            w4 = self.ws.cell(row=rx, column=5).value
             data_dic[w4] = w2
-
+        print "********"+str(data_dic)
 
 # 过滤当月时间
 # 1.过滤列表 正常格式 2017-3-1
@@ -76,47 +76,53 @@ class FilterDataExcelPipeLine(object):
 
     def __init__(self):
         self._year = str(datetime.datetime.now().year)
-        self._month = "5"#str(datetime.datetime.now().month)
+        self._month = str(datetime.datetime.now().month)
         print u'\n\n初始化当前时间'+str(self._year)+'-'+str(self._month)+'\n\n'
 
     def process_item(self, item, spider):
         if isinstance(item, HeimaKbdlItem):
             updateTime = item['updateTime']
+            print "------------------>"+updateTime.encode("utf-8")
             if " " in updateTime: 
-                pass
-            updateTime = updateTime[1:]
+                updateTime = updateTime[1:]
             ups = updateTime.split('-')
             #print ">>>>>>"+str(ups)
             # result = re.findall(util_re.time_re, updateTime)
             # print "????????"+str(result)
             # print ">>>>>>>>>>>>>FilterDataExcelPipeLine<<<<<"+str(updateTime)
             if ups:
-                if self._year == ups[0] and self._month == ups[1]:
+                if self._year in ups[0] and self._month in ups[1]:
                     return item
                 else:
                     pass
             else:
                 return item
         elif isinstance(item, HeimaKbdlDetailItem):
-            topstick = item['topsticks'][0]
-            replyTime = topstick['replyTime'] #发表于 7 天前
-            print '\n\n'+replyTime
-            if u'天前' in replyTime:
-                return item
-            if replyTime and ' ' in replyTime:
-                rs = replyTime.split(' ')
+            topstick = item['topstick']
+            # replyTime = topstick['replyTime'] #发表于 7 天前
+            replyTime = ''
+            print '\n\n'+topstick
+            if u'发布于' in topstick:
+                topstick = topstick.replace("\n","")
+                rs = topstick.split(' ')
                 if rs and len(rs) > 2:
-                    replyTime = rs[1]
-                    result = re.findall(util_re.time_re, replyTime)
-                    if result and len(result) > 0:
-                        if self._year in result[0] and self._month in result[0]:
-                           return item 
+                    for i in rs:
+                        if i and self._year in i:
+                            replyTime = i
+                    if replyTime:
+                        print "******"+replyTime
+                        result = replyTime.split("-")
+                        if result and len(result) > 0:
+                            if self._year == result[0] and self._month == result[1]:
+                                return item 
+                            else:
+                                pass
                         else:
-                            pass
+                            return item
                     else:
-                        return item
-                else:
-                    return item
+                        pass
+            else:
+                return item
 
 # 讲数据统计到文档中
 
@@ -128,12 +134,12 @@ count_times_excel_d = {}  # 名：行
 class WriteCleanDataAndCountTimes(object):
 
     def __init__(self):
-        self.workbook_ = load_workbook(filename='./czbbsspider/assets/2017.xlsx')
+        self.workbook_ = load_workbook(filename=u'./czbbsspider/assets/2017.xlsx')
         sheetnames = self.workbook_.get_sheet_names()  # 获得表单名字
         self.ws = self.workbook_.get_sheet_by_name(
-            sheetnames[1])  # 从工作表中提取某一表单
+            sheetnames[0])  # 从工作表中提取某一表单
         for rx in range(5, self.ws.max_row + 1):
-            w5 = self.ws.cell(row=rx, column=5).value
+            w5 = self.ws.cell(row=rx, column=4).value
             count_times_excel_d[w5] = rx
         for k, v in data_dic.items():
             article_count_times[v] = 0
@@ -176,6 +182,7 @@ class WriteCleanDataAndCountTimes(object):
 class WriteCleanDataExcelPipeline(object):
 
     def __init__(self):
+        print "------------------------------------------------"
         self.wb = Workbook()
         self.ws = self.wb.active
         th_line = ['板块', '姓名', '论坛账号', '发布时间', '序号', '文章名称', '链接', '回复/查看']
