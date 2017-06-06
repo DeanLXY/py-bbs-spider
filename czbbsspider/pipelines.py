@@ -82,7 +82,6 @@ class FilterDataExcelPipeLine(object):
     def process_item(self, item, spider):
         if isinstance(item, HeimaKbdlItem):
             updateTime = item['updateTime']
-            print "------------------>"+updateTime.encode("utf-8")
             if " " in updateTime: 
                 updateTime = updateTime[1:]
             ups = updateTime.split('-')
@@ -110,7 +109,6 @@ class FilterDataExcelPipeLine(object):
                         if i and self._year in i:
                             replyTime = i
                     if replyTime:
-                        print "******"+replyTime
                         result = replyTime.split("-")
                         if result and len(result) > 0:
                             if self._year == result[0] and self._month == result[1]:
@@ -151,6 +149,7 @@ class WriteCleanDataAndCountTimes(object):
             topsticks = item['topsticks']
             print '*' * 50
             u_list = []
+            # print "-------------------->"+str(len(topsticks[1:]))
             for topstick in topsticks[1:]:
                 # 获取论坛名字
                 username_bbs = topstick['username']

@@ -172,12 +172,13 @@ class HeimaSpider(CrawlSpider):
         for table_plhin in response.xpath("//div[@class='biaoqib_replythread']"):
             # print '--------------'
             reply_author = table_plhin.xpath(
-                "//div[@class='authi']/a/text()").extract_first()
-            reply_time = table_plhin.xpath("//div[@class='authi']/em/span/@title").extract_first()
+                "table/tr/td[@class='plc plct']/div/div/div/a/text()").extract_first()
+            # print "------------------>"+reply_author.encode("utf-8")
+            reply_time = table_plhin.xpath("table/tr/td[@class='plc plct']/div/div/div/a/text()").extract_first()
             if not reply_time:
-                reply_time = table_plhin.xpath("//div[@class='authi']/em/text()").extract_first()
+                reply_time = table_plhin.xpath("/div[@class='authi']/em/text()").extract_first()
             reply_content = table_plhin.xpath(
-                "//td[@class='t_f']/text()").extract_first()
+                "/td[@class='t_f']/text()").extract_first()
             # print "%s##%s##%s" %(reply_author, reply_time, reply_content)
             passenerItem = HeimaKbdlDetailPassenerItem(
                 username=reply_author, replyTime=reply_time, replyContent=reply_content)
