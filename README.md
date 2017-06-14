@@ -1,11 +1,11 @@
-##Requirements
+## Requirements
 
 * Bash(git、ssh)
 * Python 2.7
 * Scrapy
 * openpyxl
 
-##Quick Start
+## Quick Start
 
 ```shell
     scrapy crawl heima
@@ -26,9 +26,9 @@
 - [x] 自动查询查看量与回复量
 - [x] 自动存储数据
 - [x] 自动去重 
-- [x] 图形化界面
+- [ ] 图形化界面
 
-## New To Do List
+
 - [x] 统计回复数量
 - [x] 自动去除重复数量 
 - [x] 统计回复人，自动忽略楼主
